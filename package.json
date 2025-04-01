@@ -1,0 +1,38 @@
+{
+  "name": "remove-all-logs",
+  "version": "1.0.0",
+  "description": "A package that helps you remove all logs!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nafasebra/remove-all-logs.git"
+  },
+  "keywords": [
+    "logs",
+    "remove-logs",
+    "console-logs",
+    "babel",
+    "ast"
+  ],
+  "author": "nafasebra",
+  "license": "MIT",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/nafasebra/remove-all-logs/issues"
+  },
+  "homepage": "https://github.com/nafasebra/remove-all-logs#readme",
+  "dependencies": {
+    "@babel/generator": "^7.27.0",
+    "@babel/parser": "^7.27.0",
+    "@babel/traverse": "^7.27.0",
+    "fs-extra": "^11.3.0"
+  },
+  "files": [
+    "index.js",
+    "README.md"
+  ]
+}
