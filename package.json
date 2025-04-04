@@ -1,7 +1,7 @@
 {
-  "name": "remove-all-logs",
+  "name": "remove-js-logs",
   "version": "1.0.0",
-  "description": "A package that helps you remove all logs!",
+  "description": "A package that helps you remove all js logs!",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nafasebra/remove-all-logs.git"
+    "url": "git+https://github.com/nafasebra/remove-js-logs.git"
   },
   "keywords": [
     "logs",
@@ -22,9 +22,9 @@
   "license": "MIT",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/nafasebra/remove-all-logs/issues"
+    "url": "https://github.com/nafasebra/remove-js-logs/issues"
   },
-  "homepage": "https://github.com/nafasebra/remove-all-logs#readme",
+  "homepage": "https://github.com/nafasebra/remove-js-logs#readme",
   "dependencies": {
     "@babel/generator": "^7.27.0",
     "@babel/parser": "^7.27.0",
@@ -34,5 +34,8 @@
   "files": [
     "index.js",
     "README.md"
-  ]
+  ],
+  "bin": {
+    "remove-logs": "src/index.js"
+  }
 }
