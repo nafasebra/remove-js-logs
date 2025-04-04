@@ -14,11 +14,15 @@
   "keywords": [
     "logs",
     "remove-logs",
-    "console-logs",
-    "babel",
-    "ast"
+    "console-log",
+    "cli",
+    "console.log",
+    "remove",
+    "cleaner",
+    "javascript",
+    "typescript"
   ],
-  "author": "nafasebra",
+  "author": "Nafas Ebrahimi",
   "license": "MIT",
   "type": "commonjs",
   "bugs": {
