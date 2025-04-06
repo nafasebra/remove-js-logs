@@ -4,7 +4,6 @@
   "description": "A package that helps you remove all js logs!",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node index.js"
   },
   "repository": {

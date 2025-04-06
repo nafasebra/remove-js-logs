@@ -7,32 +7,46 @@ const traverse = require("@babel/traverse").default;
 const generator = require("@babel/generator").default;
 
 const consoleMethods = [
-  "assert", "clear", "count", "countReset", "debug", "dir", "dirxml", 
-  "error", "group", "groupCollapsed", "groupEnd", "info", "log", 
-  "table", "time", "timeEnd", "timeLog", "timeStamp", "trace", "warn"
+  "assert",
+  "clear",
+  "count",
+  "countReset",
+  "debug",
+  "dir",
+  "dirxml",
+  "error",
+  "group",
+  "groupCollapsed",
+  "groupEnd",
+  "info",
+  "log",
+  "table",
+  "time",
+  "timeEnd",
+  "timeLog",
+  "timeStamp",
+  "trace",
+  "warn",
 ];
-
-const args = process.argv.slice(3);
-const removeAllLogs = args.includes("all");
-const allowedMethods = removeAllLogs
-  ? consoleMethods
-  : args[0]?.split(",") || ["log"];
 
 function removeConsoleLogsFromFile(filePath) {
   let code = fs.readFileSync(filePath, "utf-8");
-
   const ast = parser.parse(code, { sourceType: "module", plugins: ["jsx"] });
+  const args = process.argv.slice(3);
+  const allowedMethods = args.includes("all")
+    ? consoleMethods
+    : args[0]?.split(",") || ["log"];
 
   traverse(ast, {
     CallExpression(path) {
       const { callee } = path.node;
       if (
-        callee.object?.name === "console" && 
+        callee.object?.name === "console" &&
         allowedMethods.includes(callee.property?.name)
       ) {
         path.remove();
       }
-    }
+    },
   });
 
   const { code: newCode } = generator(ast, { retainLines: true });
@@ -44,7 +58,9 @@ function processDirectory(dirPath) {
     const fullPath = path.join(dirPath, file);
     if (fs.statSync(fullPath).isDirectory()) {
       processDirectory(fullPath);
-    } else if ([".js", ".ts", ".jsx", ".tsx"].some(ext => file.endsWith(ext))) {
+    } else if (
+      [".js", ".ts", ".jsx", ".tsx"].some((ext) => file.endsWith(ext))
+    ) {
       removeConsoleLogsFromFile(fullPath);
       console.log(`Processed: ${fullPath}`);
     }
