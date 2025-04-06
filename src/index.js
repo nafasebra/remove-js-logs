@@ -7,26 +7,9 @@ const traverse = require("@babel/traverse").default;
 const generator = require("@babel/generator").default;
 
 const consoleMethods = [
-  "assert",
-  "clear",
-  "count",
-  "countReset",
-  "debug",
-  "dir",
-  "dirxml",
-  "error",
-  "group",
-  "groupCollapsed",
-  "groupEnd",
-  "info",
-  "log",
-  "table",
-  "time",
-  "timeEnd",
-  "timeLog",
-  "timeStamp",
-  "trace",
-  "warn",
+  "assert", "clear", "count", "countReset", "debug", "dir", "dirxml", 
+  "error", "group", "groupCollapsed", "groupEnd", "info", "log", 
+  "table", "time", "timeEnd", "timeLog", "timeStamp", "trace", "warn"
 ];
 
 const args = process.argv.slice(3);
@@ -42,9 +25,10 @@ function removeConsoleLogsFromFile(filePath) {
 
   traverse(ast, {
     CallExpression(path) {
+      const { callee } = path.node;
       if (
-        path.node.callee.object?.name === "console" &&
-        allowedMethods.includes(path.node.callee.property?.name)
+        callee.object?.name === "console" && 
+        allowedMethods.includes(callee.property?.name)
       ) {
         path.remove();
       }
@@ -60,18 +44,13 @@ function processDirectory(dirPath) {
     const fullPath = path.join(dirPath, file);
     if (fs.statSync(fullPath).isDirectory()) {
       processDirectory(fullPath);
-    } else if (
-      file.endsWith(".js") ||
-      file.endsWith(".ts") ||
-      file.endsWith(".jsx") ||
-      file.endsWith(".tsx")
-    ) {
+    } else if ([".js", ".ts", ".jsx", ".tsx"].some(ext => file.endsWith(ext))) {
       removeConsoleLogsFromFile(fullPath);
       console.log(`Processed: ${fullPath}`);
     }
   });
 }
 
-const targetDir = process.argv[2] || "."; // دریافت دایرکتوری از ورودی
+const targetDir = process.argv[2] || ".";
 processDirectory(targetDir);
 console.log("✅ All console.log statements removed!");
