@@ -1,6 +1,6 @@
 {
   "name": "remove-js-logs",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "A package that helps you remove all js logs!",
   "main": "index.js",
   "scripts": {
