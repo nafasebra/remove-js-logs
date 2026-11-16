@@ -1,102 +1,78 @@
+# remove-js-logs
 
-# 🧹 remove-js-logs
+A lightweight Node.js CLI tool for removing `console` statements from JavaScript and TypeScript projects.
 
-**remove-js-logs** is a lightweight CLI tool to automatically remove all `console.log` statements from JavaScript and TypeScript files in your project.  
-Perfect for cleaning up your codebase before production deployment.
+Built as a small open-source utility to explore source code transformation, Abstract Syntax Trees (ASTs), and CLI development.
 
----
+[View on npm](https://www.npmjs.com/package/remove-js-logs)
 
-![npm version](https://img.shields.io/npm/v/remove-js-logs.svg)
-![npm downloads](https://img.shields.io/npm/dm/remove-js-logs.svg)
-![license](https://img.shields.io/npm/l/remove-js-logs.svg)
+## Project Status
 
----
+**Archived — No Longer Maintained**
 
-## 📦 Installation
+The idea behind this project dates back several years, when I was exploring ways to automate repetitive development tasks and learn more about source code transformation.
 
-### Install globally:
+Today, there are more mature and reliable tools available for removing debugging statements, including linters, build-time transformations, and AI-assisted coding tools that can handle similar tasks.
 
-You can run this tool as globaly:
+I wouldn't necessarily recommend this tool for modern production projects, especially when more established alternatives are available.
 
-```bash
-npm install -g remove-js-logs
-```
+However, I decided to keep this repository public because it represents an important learning experience in building CLI tools, working with Abstract Syntax Trees (ASTs), and publishing open-source packages.
 
+**The value of this project today is not the problem it solves, but what I learned while building it.**
 
-## ⚙️ Usage
+## The Problem
 
-Pass specific path and run this:
+During development, we often add `console.log()` statements for debugging. Over time, these statements can accumulate across a codebase.
 
-```bash
-remove-logs [path]
-```
+I wanted a simple tool that could scan a project, identify specific console methods, and remove them without manually editing each file.
 
-For examples:
+Rather than building a one-off script, I decided to turn the solution into a reusable CLI package that other developers could install and run.
 
-```bash
-remove-js-logs .             # Remove logs from all files recursively
-remove-js-logs ./src         # Clean a specific folder
-```
+## Features
 
-You can also specify which console methods to remove by passing them as a comma-separated list:
+- Removes selected console methods, including `log`, `warn`, `error`, and `info`
+- Supports JavaScript, TypeScript, JSX, and TSX
+- Recursively scans project directories
+- Supports dry-run mode to preview changes
+- Supports creating `.bak` backups before modifying files
+- Available as an npm package
 
-```bash
-npx remove-js-logs . info,log    # Remove console.info() and console.log() calls
-npx remove-js-logs . all         # Remove all console methods (log, warn, error, etc.)
-```
+## Technical Decisions
 
-## ✅ Features
+### Why AST Instead of Regular Expressions?
 
-- ✅ Removes specific console methods (by default removes `console.log()`)
-- ✅ Supports `.js`, `.ts`, `.jsx`, and `.tsx` files
-- ✅ Recursive directory scan
-- ✅ Ignores node_modules, .git, dist, build, etc.
-- ✅ Fast, clean CLI with colored output and loading indicators
+One of the most important decisions was using an **Abstract Syntax Tree (AST)** instead of regular expressions to identify console statements.
 
-## 🔍 What Gets Removed
+A regular expression could match simple patterns such as `console.log(...)`, but JavaScript has a complex syntax. Calls may contain nested expressions, span multiple lines, or appear inside other expressions.
 
-By default, only `console.log()` calls will be removed:
+Using Babel allowed me to work with the structure of the code rather than treating source files as plain text.
 
-```js
-console.log("Debug info");
-console.log(user);
-```
+The transformation follows three steps:
 
-If specified, the following methods will also be removed:
+1. **Parse:** Convert source code into an AST using `@babel/parser`.
+2. **Traverse:** Visit `CallExpression` nodes using `@babel/traverse` and identify selected console methods.
+3. **Generate:** Convert the modified AST back into source code using `@babel/generator`.
 
-```js
-console.warn("Warning!");
-console.error("An error occurred");
-console.info("Information");
-```
+This approach provided a more structured foundation for code transformation and support for JSX and TypeScript syntax.
 
-## 🛠 Development
-To run and test locally:
+### Why a CLI Tool?
 
-```
-git clone https://github.com/nafasebra/remove-js-logs.git
-cd remove-js-logs
-npm install
-npm link
-```
+I wanted the solution to be usable across different projects without requiring integration with a particular frontend framework or build tool.
 
-This allows you to use it globally during development:
+Node.js was a natural choice because it provides filesystem APIs and integrates with npm.
 
-```bash
-remove-js-logs .
-```
+The CLI can accept a target directory, scan its files, and apply the transformation wherever matching statements are found.
 
-To unlink:
+### Why Dry-Run and Backup Options?
 
-```bash
-npm unlink
-```
+Automated source code modifications can be risky, especially when applied across an entire project.
 
-## 💬 Feedback & Contributions
+I added two options to make the tool easier to inspect and use:
 
-Feel free to open issues or submit pull requests.
-Suggestions and contributions are always welcome!
+- **Dry Run:** Reports the number of matching console calls without writing changes to the files.
+- **Backup:** Creates a `.bak` copy before overwriting a modified file.
 
-## 🧾 License
+These options helped me explore an important consideration in developer tooling: users should have visibility into potentially destructive operations.
 
-MIT © [Nafas Ebrahimi](LICENSE)
+## What I Learned
+
