@@ -76,3 +76,100 @@ These options helped me explore an important consideration in developer tooling:
 
 ## What I Learned
 
+Building this tool gave me practical experience with several topics beyond everyday application development.
+
+**1. Abstract Syntax Trees and Code Transformation**
+
+I gained a better understanding of how source code can be parsed into structured nodes, inspected, modified, and generated again.
+
+**2. Building and Publishing CLI Tools**
+
+I explored how Node.js applications can be exposed as executable commands and distributed through npm.
+
+**3. Filesystem Operations**
+
+Working with recursive directory traversal, file reading, and file modification helped me understand the practical challenges of automating operations across a codebase.
+
+**4. Designing Safer Developer Tools**
+
+Implementing preview and backup options highlighted the importance of protecting users from unintended changes.
+
+**5. Understanding the Limits of AST Transformations**
+
+Using an AST is more reliable than basic text matching, but it does not automatically guarantee that a transformation preserves program behavior.
+
+Removing a function call can also remove side effects from its arguments or affect surrounding expressions. This is an important consideration when designing source code transformation tools.
+
+## Installation
+
+Install globally:
+
+```bash
+npm install -g remove-js-logs
+```
+
+## Usage
+
+Remove default `console.log()` calls from a directory:
+
+```bash
+remove-logs ./src
+```
+
+Remove selected console methods:
+
+```bash
+remove-logs ./src log,info
+```
+
+Remove all supported console methods:
+
+```bash
+remove-logs ./src all
+```
+
+Preview changes without modifying files:
+
+```bash
+remove-logs ./src --dry-run
+```
+
+Create backups before modifying files:
+
+```bash
+remove-logs ./src --backup
+```
+
+## Limitations
+
+This project was built as a focused developer utility rather than a production-grade codemod engine.
+
+Some known limitations include:
+
+- Removing console calls may affect expressions with side effects.
+- The current recursive directory traversal does not exclude dependency or build directories.
+- Re-generating code from an AST may change source formatting.
+- The tool does not perform semantic analysis to guarantee behavior preservation.
+
+For these reasons, changes should be reviewed before use in important codebases.
+
+## Tech Stack
+
+- **Node.js** — CLI execution and filesystem operations
+- **JavaScript** — Implementation
+- **@babel/parser** — Parsing source code into ASTs
+- **@babel/traverse** — Finding and transforming AST nodes
+- **@babel/generator** — Generating modified source code
+- **npm** — Package distribution
+
+## Project Status
+
+**Archived — No Longer Maintained**
+
+This repository is preserved as an open-source project and a record of my experience building developer tools and exploring source code transformation.
+
+No further development or maintenance is planned.
+
+## License
+
+MIT License.
